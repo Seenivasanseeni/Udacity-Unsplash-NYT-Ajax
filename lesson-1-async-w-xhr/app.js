@@ -48,8 +48,11 @@
         nytRequest.open("GET",`http://api.nytimes.com/svc/search/v2/articlesearch.json?q=${searchText}&api-key=af82619a936b4f43a41b6060d3816671`);
         nytRequest.onload=function(){
             const data=JSON.parse(nytRequest.responseText);
-            if(data.response && data.response.docs && data.response.docs.length>0);
+            if(data.response && data.response.docs && data.response.docs.length>0)
                 addArticles(data.response.docs);
+            else {
+                resetresponseContainer.insertAdjacentHTML("beforeend","<h1>No Relevant Articles Found</h1>");
+            }
             console.log("Sucess");
         }
         nytRequest.onerror=function(){
