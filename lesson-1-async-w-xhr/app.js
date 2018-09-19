@@ -67,7 +67,7 @@
         e.preventDefault();
         responseContainer.innerHTML = '';
         searchedForText = searchField.value;
-        //getImageUnsplash(searchedForText);    
+        getImageUnsplash(searchedForText);    
         getArticles(searchedForText);
     });
 })();
