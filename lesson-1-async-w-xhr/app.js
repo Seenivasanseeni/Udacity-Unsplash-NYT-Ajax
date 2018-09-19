@@ -11,7 +11,7 @@
             <figcaption> By ${image.user.name} </figcaption>
         </figure>
         `;
-        responseContainer.innerHTML=htmlcontent;
+        responseContainer.insertAdjacentHTML('afterbegin',htmlcontent);
     }
 
     const resetresponseContainer=function(){
@@ -26,11 +26,14 @@
             let htmlContent='';
             const data=JSON.parse(this.response);
             const firstImage=data.results[0];
-            addImageUnsplash(firstImage);
-            console.log(`Got the correct response ${firstImage}`);
+            if(firstImage)
+                addImageUnsplash(firstImage);
+            else {
+                resetresponseContainer.insertAdjacentHTML("beforeend","<h1>No Relevant Articles Found</h1>");
+            }
         };
-        unsplashRequest.onerror=function(){
-            console.log("Error in receiving unsplash images");
+        console.log("Error in receiving unsplash images");
+            unsplashRequest.onerror=function(){
         }
         unsplashRequest.send();
     }
