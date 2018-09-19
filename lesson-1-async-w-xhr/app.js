@@ -30,9 +30,33 @@
             console.log(`Got the correct response ${firstImage}`);
         };
         unsplashRequest.onerror=function(){
-            console.log("Error");
+            console.log("Error in receiving unsplash images");
         }
         unsplashRequest.send();
+    }
+    
+    var addArticles=function(docs){
+        let articleList="<ul>"+docs.map(article=>{
+            return `<li class="article"><h2><a href="${article.web_url}"> ${article.headline.main}</a></h2>
+            <p> ${article.snippet}</p>
+            <li>`
+        }).join(' ')+"</ul>";
+        responseContainer.insertAdjacentHTML('beforeend',articleList);
+    }
+    var getArticles=function(searchText){
+        const nytRequest=new XMLHttpRequest();
+        nytRequest.open("GET",`http://api.nytimes.com/svc/search/v2/articlesearch.json?q=${searchText}&api-key=af82619a936b4f43a41b6060d3816671`);
+        nytRequest.onload=function(){
+            const data=JSON.parse(nytRequest.responseText);
+            if(data.response && data.response.docs && data.response.docs.length>0);
+                addArticles(data.response.docs);
+            console.log("Sucess");
+        }
+        nytRequest.onerror=function(){
+            console.log("Error in receiving new york articles");
+        }
+        nytRequest.send();
+    
     }
 
 
@@ -41,6 +65,6 @@
         responseContainer.innerHTML = '';
         searchedForText = searchField.value;
         //getImageUnsplash(searchedForText);    
-        
+        getArticles(searchedForText);
     });
 })();
